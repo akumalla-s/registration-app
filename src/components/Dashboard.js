@@ -1,36 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import Logout from './Logout'
-import "../css/Dashboard.css"
+import React from 'react';
+import Logout from './Logout';
+import "../css/Dashboard.css";
+import { useAuth } from './AuthContext';
 
 export default function Dashboard() {
-  const [loggedInUserData, setLoggedInUserData] = useState(null);
-
-  useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-
-    // Find the logged-in user in the existingUsers array based on the username
-    const loggedInUserInfo = existingUsers.find(u => u.username === loggedInUser);
-
-    if(loggedInUserInfo){
-      setLoggedInUserData(loggedInUserInfo);
-    }
-  }, []);
+  const { state: { user } } = useAuth();
 
   return (
     <div>
       <h2 className='dashboard-title'>Your Information</h2>
-      {loggedInUserData && (
+      {user && (
         <div className='userdata'>
-          <p>First Name: {loggedInUserData.firstName}</p>
-          <p>Last Name: {loggedInUserData.lastName}</p>
-          <p>Email: {loggedInUserData.email}</p>
-          <p>Phone Number: {loggedInUserData.phoneNumber}</p>
-          <p>Address: {loggedInUserData.address}</p>
-          <p>City: {loggedInUserData.city}</p>
-          <p>State: {loggedInUserData.state}</p>
-          <p>Country: {loggedInUserData.country}</p>
-          <p>Zip Code: {loggedInUserData.zipCode}</p>
+          <p>First Name: {user.firstName}</p>
+          <p>Last Name: {user.lastName}</p>
+          <p>Email: {user.email}</p>
+          <p>Phone Number: {user.phoneNumber}</p>
+          <p>Address: {user.address}</p>
+          <p>City: {user.city}</p>
+          <p>State: {user.state}</p>
+          <p>Country: {user.country}</p>
+          <p>Zip Code: {user.zipCode}</p>
         </div>
       )}
       <br/>
@@ -38,5 +27,5 @@ export default function Dashboard() {
         <Logout />
       </div>
     </div>
-  )
+  );
 }
