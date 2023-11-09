@@ -12,12 +12,12 @@ import { AuthProvider, useAuth } from "./components/AuthContext";
 
 function App() {
   const navigate = useNavigate();
+
   const { dispatch } = useAuth();
   const [isRegisterClicked, setIsRegisterClicked] = useState(false);
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
     const user = storedUsers.find((user) => user.username === loggedInUser);
 
@@ -30,28 +30,38 @@ function App() {
     } else {
       navigate("/login");
     }
-  }, [dispatch]);
+  }, []);
+  
 
   return (
     <div className="container">
+
       <div className="header">
         <Header />
       </div>
+      
       <div className="body">
         <Routes>
           <Route
             path="/login"
-            element={
-              <Login onRegisterClick={() => setIsRegisterClicked(true)} />
-            }
+            element={<Login onRegisterClick={() => setIsRegisterClicked(true)} />}
           />
-          <Route path="/register" element={<Registration />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route 
+            path="/register" 
+            element={<Registration />} 
+          />
+          <Route 
+            path="/dashboard" 
+            element={<Dashboard />} 
+          />
           <Route
             path="/registration-success"
             element={<RegistrationSuccess />}
           />
-          <Route path="/logout" element={<Logout />} />
+          <Route 
+            path="/logout" 
+            element={<Logout />} 
+          />
         </Routes>
       </div>
       <div className="footer">
