@@ -1,0 +1,22 @@
+.dashboard-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.userdata {
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.userdata h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.userdata p {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
