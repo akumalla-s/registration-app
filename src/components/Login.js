@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import "../css/Login.css";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 export default function Login({ onRegisterClick }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+
+  const { dispatch } = useAuth();
 
   const navigate = useNavigate();
 
@@ -15,12 +18,15 @@ export default function Login({ onRegisterClick }) {
   };
 
   const handleLogin = (username, password) => {
-    const storedUser = JSON.parse(localStorage.getItem("users")) || [];
-    const userExists = storedUser.some(
+
+    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+    const user = storedUsers.find(
       (user) => user.username === username && user.password === password
     );
 
-    if (userExists) {
+    if (user) {
+      // Dispatch a LOGIN action to update the authentication state
+      dispatch({ type: "LOGIN", payload: user });
       localStorage.setItem("loggedInUser", JSON.stringify(username));
       navigate("/dashboard");
     } else {
