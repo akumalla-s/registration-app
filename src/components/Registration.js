@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function Registration() {
+  const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -14,6 +17,7 @@ export default function Registration() {
         country: "",
         zipCode: "",
     });
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleChange = (e)=>{
       const {name, value} = e.target;
@@ -26,24 +30,37 @@ export default function Registration() {
     const handleSubmit = (e)=>{
       e.preventDefault();
       console.log("Form submitted with data:", formData);
-      // Reset form fields if needed
-      setFormData({
-        firstName: "",
-        lastName: "",
-        username: "",
-        password: "",
-        email: "",
-        phoneNumber: "",
-        address: "",
-        city: "",
-        state: "",
-        country: "",
-        zipCode: "",
-      });
+      const { username, password } = formData;
+      if(username && password){
+        // Check if a user with the same username already exists
+        const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+        const userExists = existingUsers.some((user) => user.username === username);
+
+        if(userExists){
+          setErrorMessage("Username already exists. Please choose a different one.");
+        }else{
+          // Create a new user object
+          const newUser = {
+            ...formData,
+          };
+
+          existingUsers.push(newUser);
+          localStorage.setItem("users", JSON.stringify(existingUsers));
+          setErrorMessage("Registration successful!");
+
+          navigate("/registration-success");
+        }
+
+      }else{
+        setErrorMessage("Please fill in the fields!");
+      }
     }
   return (
     <div className='registration-form'>
       <h2>Registration</h2>
+      <div>
+        {errorMessage}
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>firstName:</label>
